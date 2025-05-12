@@ -1,6 +1,7 @@
 package com.mml.search_stock_api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +26,18 @@ public class StockController {
     @CrossOrigin(origins = "http://localhost:5000")
     @GetMapping(value = "/{code}")
     public ResponseEntity<StockMinDTO> findByCode(@PathVariable String code) {
-        StockDTO stockDto = service.findByCode(code);
-        List<Result> results = stockDto.getResults();
+        Optional<StockDTO> stockDto = service.findByCode(code);
 
-        if (results == null || results.isEmpty()) {
+        if (!stockDto.isPresent()  || stockDto.get().getResults().isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-       return  results.stream()
+        List<Result> results = stockDto.get().getResults();
+
+        return  results.stream()
                     .filter(result -> result.getSymbol().equalsIgnoreCase(code))
                     .findFirst()
                     .map(result -> ResponseEntity.ok(new StockMinDTO(result)))
                     .orElse(ResponseEntity.notFound().build());
-
     }
 }
