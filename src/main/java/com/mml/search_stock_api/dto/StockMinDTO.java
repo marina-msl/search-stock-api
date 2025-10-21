@@ -9,7 +9,7 @@ public class StockMinDTO {
     private String shortName;
 
 
-    public StockMinDTO(Result result){
+    public StockMinDTO(StockDetailed result){
         this.code = result.getSymbol();
         this.currency = result.getCurrency();
         this.price = result.getRegularMarketPrice();
