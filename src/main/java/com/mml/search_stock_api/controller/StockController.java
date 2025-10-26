@@ -14,7 +14,6 @@ import com.mml.search_stock_api.dto.StockDetailed;
 import com.mml.search_stock_api.dto.StockMinDTO;
 import com.mml.search_stock_api.service.StockService;
 
-import io.micrometer.core.ipc.http.HttpSender;
 import reactor.core.publisher.Mono;
 
 @RestController
