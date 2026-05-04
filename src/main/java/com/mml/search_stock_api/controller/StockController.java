@@ -23,7 +23,7 @@ public class StockController {
     @Autowired
     private StockService service;
 
-    @CrossOrigin(origins = "http://localhost:5000")
+    @CrossOrigin(origins = "${cors.allowed-origins}")
     @GetMapping(value = "/{code}")
     public Mono<ResponseEntity<StockMinDTO>> findByCode(@PathVariable String code) {
         return  service.findByCode(code)
