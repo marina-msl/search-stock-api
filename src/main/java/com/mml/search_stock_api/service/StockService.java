@@ -1,20 +1,32 @@
 package com.mml.search_stock_api.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.mml.search_stock_api.dto.StockDTO;
 
+import jakarta.annotation.PostConstruct;
 import reactor.core.publisher.Mono;
 
 @Service
 public class StockService {
 
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://brapi.dev/api/quote/")
-            .build();
-            
+    @Value("${baseUrl}")
+    private String baseUrl;
+    @Value("${stockUrl}")
+    private String stockUrl;
+
+    private  WebClient webClient;
+
+    @PostConstruct
+    public void init() {
+        this.webClient = WebClient.builder()
+                .baseUrl(baseUrl)
+                .build();
+    }
+
    public Mono<StockDTO> findByCode(String code) {
 
     String url = buildUrl(code);
@@ -33,6 +45,6 @@ public class StockService {
     }
 
     private String buildUrl(String code) {
-        return code + "?range=5d&interval=1d&fundamental=true&dividends=false&token=dm5Q62W9vhrM82bqq9SywZ";
+        return code + stockUrl;
     }
 }
